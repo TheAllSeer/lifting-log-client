@@ -1,0 +1,15 @@
+export enum MuscleGroup {
+  CHEST = 'Chest',
+  SHOULDERS = 'Shoulders',
+  TRICEPS = 'Triceps',
+  BICEPS = 'Biceps',
+  FOREARMS = 'Forearms',
+  BACK_UPPER = 'Upper Back',
+  BACK_LATS = 'Lats',
+  BACK_LOWER = 'Lower Back',
+  CORE = 'Core',
+  GLUTES = 'Glutes',
+  QUADS = 'Quads',
+  HAMSTRINGS = 'Hamstrings',
+  CALVES = 'Calves',
+}
