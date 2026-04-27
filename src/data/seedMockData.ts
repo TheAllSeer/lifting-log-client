@@ -8,3 +8,7 @@ export async function seedMockData(): Promise<void> {
   if (existing) return;
   await AsyncStorage.setItem(WORKOUTS_KEY, JSON.stringify(mockWorkouts));
 }
+
+export async function reseedMockData(): Promise<void> {
+  await AsyncStorage.setItem(WORKOUTS_KEY, JSON.stringify(mockWorkouts));
+}

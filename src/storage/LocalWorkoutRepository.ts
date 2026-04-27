@@ -47,4 +47,8 @@ export class LocalWorkoutRepository implements WorkoutRepository {
   async clearActiveSession(): Promise<void> {
     await AsyncStorage.removeItem(SESSION_KEY);
   }
+
+  async clearAll(): Promise<void> {
+    await AsyncStorage.removeItem(WORKOUTS_KEY);
+  }
 }

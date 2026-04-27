@@ -3,12 +3,9 @@ import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../theme/colors';
 import { useSession } from '../contexts/SessionContext';
+import { SessionBannerProps } from './sessionBannerTypes';
 
-interface Props {
-  onPress: () => void;
-}
-
-export default function SessionBanner({ onPress }: Props) {
+export default function SessionBanner({ onPress }: SessionBannerProps) {
   const { activeSession } = useSession();
   if (!activeSession) return null;
 
