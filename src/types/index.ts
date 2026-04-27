@@ -1,5 +1,10 @@
 export type WeightUnit = 'kg' | 'lbs';
 
+export interface MuscleMapping {
+  primary: string[];
+  secondary: string[];
+}
+
 export interface WorkoutSet {
   id: string;
   reps: number;

@@ -1,10 +1,6 @@
+import { MuscleMapping } from '../types';
 import { ExerciseName } from './exercises';
 import { MuscleGroup } from './muscleGroups';
-
-interface MuscleMapping {
-  primary: MuscleGroup[];
-  secondary: MuscleGroup[];
-}
 
 export const exerciseMuscleMap: Record<ExerciseName, MuscleMapping> = {
   [ExerciseName.BENCH_PRESS]: {
