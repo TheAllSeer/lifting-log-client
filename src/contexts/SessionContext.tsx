@@ -2,14 +2,7 @@ import React, { createContext, useContext, useState, useEffect, useRef, useCallb
 import { ActiveSession, Workout } from '../types/types';
 import { workoutRepository } from '../storage/storage';
 import { uuid } from '../utils/uuid';
-
-interface SessionContextValue {
-  activeSession: ActiveSession | null;
-  elapsed: number;
-  startSession: () => Promise<void>;
-  updateSession: (session: ActiveSession) => Promise<void>;
-  finishSession: () => Promise<void>;
-}
+import { SessionContextValue } from './sessionContextTypes';
 
 const SessionContext = createContext<SessionContextValue>({
   activeSession: null,

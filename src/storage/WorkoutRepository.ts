@@ -9,4 +9,6 @@ export interface WorkoutRepository {
   getActiveSession(): Promise<ActiveSession | null>;
   saveActiveSession(session: ActiveSession): Promise<void>;
   clearActiveSession(): Promise<void>;
+
+  clearAll(): Promise<void>;
 }

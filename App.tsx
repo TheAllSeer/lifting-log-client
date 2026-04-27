@@ -1,18 +1,29 @@
 import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { seedMockData } from './src/data/seedMockData';
 import { SessionProvider } from './src/contexts/SessionContext';
+import { SettingsProvider } from './src/contexts/SettingsContext';
 import RootNavigation from './src/navigation/navigation';
 
 export default function App() {
+  const [ready, setReady] = useState(false);
+
   useEffect(() => {
-    if (__DEV__) seedMockData();
+    async function init() {
+      if (__DEV__) await seedMockData();
+      setReady(true);
+    }
+    init();
   }, []);
 
+  if (!ready) return null;
+
   return (
-    <SessionProvider>
-      <StatusBar style="light" />
-      <RootNavigation />
-    </SessionProvider>
+    <SettingsProvider>
+      <SessionProvider>
+        <StatusBar style="light" />
+        <RootNavigation />
+      </SessionProvider>
+    </SettingsProvider>
   );
 }

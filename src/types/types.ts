@@ -29,3 +29,11 @@ export interface Workout {
 export interface ActiveSession extends Workout {
   startedAt: string; // ISO timestamp of when session began
 }
+
+export type WeekStart = 'sunday' | 'monday';
+export type DisplayUnit = 'kg' | 'lbs';
+
+export interface Settings {
+  weekStart: WeekStart;
+  displayUnit: DisplayUnit;
+}
