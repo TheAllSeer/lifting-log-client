@@ -1,4 +1,4 @@
-# weekly volume calculator
+# weekly sets per muscle group
 
 - how will it be updated with regards to retrospecitve workouts or live sessions?
 - what should it look like?
@@ -15,13 +15,12 @@ for example:
 - bicep curls will only have the biceps muscle group, it will be the primary muscle group. 
 - bench press will have the chest, triceps and shoulders, chest being the primary muscle group while triceps and shoulders both being secondary muscle groups. 
 
-based on this, the volume for this set will be calculated. 
+based on this, the number of sets will be calculated.
 
-for each set, the set's volume is calculated with reps times weight. 
-example: if i lifted 100kg of bicep curls for 3 sets of 8 reps, my total bicep volume for this instance is 3 times 8 times 100kg = 2400kg. 
+each set will be added as one set to the sum of sets for the primary muscle groups, and as half a set to the sum of sets for the secondary muscle groups.
 
-for exercises with primary and secondary muscle groups, the secondary muscle groups will be calculated with 50% of the weight. 
-for example, for 3 sets of 8 reps with 100kg of bench press, my volume for the chest will be 2400kg, whereas the volume for triceps and shoulders will be 1200kg. 
+example:
+3 sets of bench press, will be 3 chest sets, 0.5 sets of triceps and 0.5 sets of shoulders.
 
 
 ## how will it behave with live sessions or retrospective workouts?
@@ -33,4 +32,3 @@ no options for now.
 
 ## UI
 one muscle group per row. 
-no specific instructions, but the UI here should be distinguishable from the sets per muscle group widget UI. 
