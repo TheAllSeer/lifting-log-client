@@ -1,3 +1,5 @@
+import { MuscleGroup } from '../constants/muscleGroups';
+
 export type WeightUnit = 'kg' | 'lbs';
 
 export interface MuscleMapping {
@@ -36,4 +38,9 @@ export type DisplayUnit = 'kg' | 'lbs';
 export interface Settings {
   weekStart: WeekStart;
   displayUnit: DisplayUnit;
+}
+
+export interface MuscleStats {
+  muscle: MuscleGroup;
+  value: number;
 }

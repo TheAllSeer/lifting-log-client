@@ -5,8 +5,8 @@ export const mockWorkouts: Workout[] = [
   {
     id: 'mock-workout-1',
     name: 'Push Day',
-    date: '2026-04-22',
-    savedAt: '2026-04-22T19:45:00.000Z',
+    date: '2026-04-26',
+    savedAt: '2026-04-26T19:45:00.000Z',
     exercises: [
       {
         id: 'mock-ex-1-1',
@@ -49,8 +49,8 @@ export const mockWorkouts: Workout[] = [
   {
     id: 'mock-workout-2',
     name: 'Pull Day',
-    date: '2026-04-24',
-    savedAt: '2026-04-24T18:20:00.000Z',
+    date: '2026-04-27',
+    savedAt: '2026-04-27T18:20:00.000Z',
     exercises: [
       {
         id: 'mock-ex-2-1',
