@@ -14,9 +14,9 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../theme/colors';
-import { Exercise, Workout, WorkoutSet, WeightUnit } from '../types';
-import { workoutRepository } from '../storage';
-import { WorkoutsStackParamList } from '../navigation';
+import { Exercise, Workout, WorkoutSet, WeightUnit } from '../types/types';
+import { workoutRepository } from '../storage/storage';
+import { WorkoutsStackParamList } from '../navigation/navigationTypes';
 import { uuid } from '../utils/uuid';
 
 type Nav = NativeStackNavigationProp<WorkoutsStackParamList, 'LogWorkout'>;

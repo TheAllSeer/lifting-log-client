@@ -1,5 +1,5 @@
 import { ExerciseName } from '../constants/exercises';
-import { Workout } from '../types';
+import { Workout } from '../types/types';
 
 export const mockWorkouts: Workout[] = [
   {

@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ActiveSession, Workout } from '../types';
+import { ActiveSession, Workout } from '../types/types';
 import { WorkoutRepository } from './WorkoutRepository';
 
 const WORKOUTS_KEY = 'lifting_log_workouts';

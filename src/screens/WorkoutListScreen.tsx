@@ -11,9 +11,9 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../theme/colors';
-import { Workout } from '../types';
-import { workoutRepository } from '../storage';
-import { WorkoutsStackParamList } from '../navigation';
+import { Workout } from '../types/types';
+import { workoutRepository } from '../storage/storage';
+import { WorkoutsStackParamList } from '../navigation/navigationTypes';
 import { useSession } from '../contexts/SessionContext';
 
 type Nav = NativeStackNavigationProp<WorkoutsStackParamList, 'WorkoutList'>;

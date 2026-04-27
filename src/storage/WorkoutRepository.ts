@@ -1,4 +1,4 @@
-import { ActiveSession, Workout } from '../types';
+import { ActiveSession, Workout } from '../types/types';
 
 export interface WorkoutRepository {
   getAll(): Promise<Workout[]>;

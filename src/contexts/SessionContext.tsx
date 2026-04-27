@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
-import { ActiveSession, Workout } from '../types';
-import { workoutRepository } from '../storage';
+import { ActiveSession, Workout } from '../types/types';
+import { workoutRepository } from '../storage/storage';
 import { uuid } from '../utils/uuid';
 
 interface SessionContextValue {

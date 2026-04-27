@@ -5,25 +5,15 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { View } from 'react-native';
 import { colors } from '../theme/colors';
+import { WorkoutsStackParamList, TabParamList } from './navigationTypes';
 
 import WorkoutListScreen from '../screens/WorkoutListScreen';
 import LogWorkoutScreen from '../screens/LogWorkoutScreen';
 import WorkoutDetailScreen from '../screens/WorkoutDetailScreen';
 import LiveSessionScreen from '../screens/LiveSessionScreen';
 import PresetsScreen from '../screens/PresetsScreen';
+import HomeScreen from '../screens/HomeScreen';
 import SessionBanner from '../components/SessionBanner';
-
-export type WorkoutsStackParamList = {
-  WorkoutList: undefined;
-  LogWorkout: undefined;
-  WorkoutDetail: { workoutId: string };
-  LiveSession: undefined;
-};
-
-export type TabParamList = {
-  WorkoutsTab: undefined;
-  PresetsTab: undefined;
-};
 
 const Stack = createNativeStackNavigator<WorkoutsStackParamList>();
 const Tab = createBottomTabNavigator<TabParamList>();
@@ -70,6 +60,17 @@ export default function RootNavigation() {
             tabBarStyle: { backgroundColor: colors.tabBar, borderTopColor: colors.border },
           }}
         >
+          <Tab.Screen
+            name="HomeTab"
+            component={HomeScreen}
+            options={{
+              title: 'Home',
+              tabBarIcon: ({ color, size }) => <Ionicons name="home-outline" size={size} color={color} />,
+              headerShown: true,
+              headerStyle: { backgroundColor: colors.surface },
+              headerTintColor: colors.textPrimary,
+            }}
+          />
           <Tab.Screen
             name="WorkoutsTab"
             component={WorkoutsStack}

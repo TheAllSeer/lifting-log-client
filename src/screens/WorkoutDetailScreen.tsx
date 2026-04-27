@@ -11,9 +11,9 @@ import {
 import { useFocusEffect, useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { colors } from '../theme/colors';
-import { Workout } from '../types';
-import { workoutRepository } from '../storage';
-import { WorkoutsStackParamList } from '../navigation';
+import { Workout } from '../types/types';
+import { workoutRepository } from '../storage/storage';
+import { WorkoutsStackParamList } from '../navigation/navigationTypes';
 
 type Nav = NativeStackNavigationProp<WorkoutsStackParamList, 'WorkoutDetail'>;
 type Route = RouteProp<WorkoutsStackParamList, 'WorkoutDetail'>;

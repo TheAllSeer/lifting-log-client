@@ -1,4 +1,4 @@
-import { MuscleMapping } from '../types';
+import { MuscleMapping } from '../types/types';
 import { ExerciseName } from './exercises';
 import { MuscleGroup } from './muscleGroups';
 
