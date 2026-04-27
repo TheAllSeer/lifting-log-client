@@ -1,9 +1,10 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { TouchableOpacity, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { colors } from '../theme/colors';
-import { useSession } from '../contexts/SessionContext';
+import { colors } from '../../theme/colors';
+import { useSession } from '../../contexts/SessionContext';
 import { SessionBannerProps } from './sessionBannerTypes';
+import { styles } from './sessionBannerStyles';
 
 export default function SessionBanner({ onPress }: SessionBannerProps) {
   const { activeSession } = useSession();
@@ -17,15 +18,3 @@ export default function SessionBanner({ onPress }: SessionBannerProps) {
   );
 }
 
-const styles = StyleSheet.create({
-  banner: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: colors.sessionBanner,
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    gap: 8,
-  },
-  text: { color: colors.sessionAccent, fontSize: 13, fontWeight: '600' },
-});

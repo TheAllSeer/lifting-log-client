@@ -1,9 +1,10 @@
 import React, { useLayoutEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
-import { colors } from '../theme/colors';
-import SettingsModal from '../components/SettingsModal';
+import { colors } from '../../theme/colors';
+import SettingsModal from './SettingsModal/SettingsModal';
+import { styles } from './homeScreenStyles';
 
 export default function HomeScreen() {
   const navigation = useNavigation();
@@ -44,15 +45,3 @@ export default function HomeScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background },
-  content: { padding: 16, gap: 16 },
-  card: {
-    backgroundColor: colors.surface,
-    borderRadius: 12,
-    padding: 16,
-    borderWidth: 1,
-    borderColor: colors.border,
-  },
-  cardTitle: { color: colors.textPrimary, fontSize: 16, fontWeight: '600' },
-});

@@ -7,13 +7,13 @@ import { View } from 'react-native';
 import { colors } from '../theme/colors';
 import { WorkoutsStackParamList, TabParamList } from './navigationTypes';
 
-import WorkoutListScreen from '../screens/WorkoutListScreen';
-import LogWorkoutScreen from '../screens/LogWorkoutScreen';
-import WorkoutDetailScreen from '../screens/WorkoutDetailScreen';
-import LiveSessionScreen from '../screens/LiveSessionScreen';
-import PresetsScreen from '../screens/PresetsScreen';
-import HomeScreen from '../screens/HomeScreen';
-import SessionBanner from '../components/SessionBanner';
+import WorkoutListScreen from '../screens/WorkoutListScreen/WorkoutListScreen';
+import LogWorkoutScreen from '../screens/LogWorkoutScreen/LogWorkoutScreen';
+import WorkoutDetailScreen from '../screens/WorkoutDetailScreen/WorkoutDetailScreen';
+import LiveSessionScreen from '../screens/LiveSessionScreen/LiveSessionScreen';
+import PresetsScreen from '../screens/PresetsScreen/PresetsScreen';
+import HomeScreen from '../screens/HomeScreen/HomeScreen';
+import SessionBanner from '../components/SessionBanner/SessionBanner';
 
 const Stack = createNativeStackNavigator<WorkoutsStackParamList>();
 const Tab = createBottomTabNavigator<TabParamList>();

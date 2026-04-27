@@ -2,7 +2,6 @@ import React, { useCallback, useState } from 'react';
 import {
   View,
   Text,
-  StyleSheet,
   FlatList,
   TouchableOpacity,
   ActivityIndicator,
@@ -10,11 +9,12 @@ import {
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
-import { colors } from '../theme/colors';
-import { Workout } from '../types/types';
-import { workoutRepository } from '../storage/storage';
-import { WorkoutsStackParamList } from '../navigation/navigationTypes';
-import { useSession } from '../contexts/SessionContext';
+import { colors } from '../../theme/colors';
+import { Workout } from '../../types/types';
+import { workoutRepository } from '../../storage/storage';
+import { WorkoutsStackParamList } from '../../navigation/navigationTypes';
+import { useSession } from '../../contexts/SessionContext';
+import { styles } from './workoutListScreenStyles';
 
 type Nav = NativeStackNavigationProp<WorkoutsStackParamList, 'WorkoutList'>;
 
@@ -122,67 +122,3 @@ export default function WorkoutListScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background },
-  centered: { flex: 1, backgroundColor: colors.background, alignItems: 'center', justifyContent: 'center', padding: 32 },
-  list: { padding: 16, paddingBottom: 96 },
-  card: {
-    backgroundColor: colors.surface,
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 12,
-    borderWidth: 1,
-    borderColor: colors.border,
-  },
-  cardHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 },
-  cardDate: { color: colors.textSecondary, fontSize: 13 },
-  cardName: { color: colors.textPrimary, fontSize: 16, fontWeight: '600' },
-  cardExercises: { color: colors.textSecondary, fontSize: 14 },
-  emptyTitle: { color: colors.textPrimary, fontSize: 20, fontWeight: '600', marginTop: 16 },
-  emptySub: { color: colors.textSecondary, fontSize: 15, marginTop: 8, textAlign: 'center' },
-  emptyActions: { flexDirection: 'row', alignItems: 'center', gap: 12, marginTop: 24 },
-  startBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: colors.sessionAccent,
-    paddingVertical: 14,
-    paddingHorizontal: 20,
-    borderRadius: 28,
-    gap: 6,
-  },
-  startBtnText: { color: '#000', fontSize: 16, fontWeight: '600' },
-  fabRow: {
-    position: 'absolute',
-    bottom: 24,
-    right: 24,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-  },
-  startFab: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    backgroundColor: colors.sessionAccent,
-    alignItems: 'center',
-    justifyContent: 'center',
-    elevation: 4,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-  },
-  fab: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    backgroundColor: colors.primary,
-    alignItems: 'center',
-    justifyContent: 'center',
-    elevation: 4,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-  },
-});
