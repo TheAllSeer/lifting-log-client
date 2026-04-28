@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -9,7 +9,7 @@ import {
   Platform,
   KeyboardAvoidingView,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, usePreventRemove } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../../theme/colors';
@@ -17,6 +17,7 @@ import { Exercise, Workout, WorkoutSet, WeightUnit } from '../../types/types';
 import { workoutRepository } from '../../storage/storage';
 import { WorkoutsStackParamList } from '../../navigation/navigationTypes';
 import { uuid } from '../../utils/uuid';
+import { ExercisePicker } from '../../components/ExercisePicker/ExercisePicker';
 import { styles } from './logWorkoutScreenStyles';
 
 type Nav = NativeStackNavigationProp<WorkoutsStackParamList, 'LogWorkout'>;
@@ -40,9 +41,9 @@ export default function LogWorkoutScreen() {
   const [name, setName] = useState('');
   const [date, setDate] = useState(todayISO());
   const [exercises, setExercises] = useState<Exercise[]>([makeExercise()]);
-  const dirty = useRef(false);
+  const [dirty, setDirty] = useState(false);
 
-  const markDirty = () => { dirty.current = true; };
+  const markDirty = () => setDirty(true);
 
   const updateExerciseName = (exIdx: number, value: string) => {
     markDirty();
@@ -127,29 +128,23 @@ export default function LogWorkoutScreen() {
     };
 
     await workoutRepository.save(workout);
-    dirty.current = false;
+    setDirty(false);
     navigation.goBack();
   };
 
-  // Intercept all back navigation (gesture, header back, cancel button) when dirty
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('beforeRemove', (e) => {
-      if (!dirty.current) return;
-      e.preventDefault();
-      Alert.alert('Discard workout?', 'You have unsaved changes.', [
-        { text: 'Keep editing', style: 'cancel' },
-        {
-          text: 'Discard',
-          style: 'destructive',
-          onPress: () => {
-            dirty.current = false;
-            navigation.dispatch(e.data.action);
-          },
+  usePreventRemove(dirty, ({ data }) => {
+    Alert.alert('Discard workout?', 'You have unsaved changes.', [
+      { text: 'Keep editing', style: 'cancel' },
+      {
+        text: 'Discard',
+        style: 'destructive',
+        onPress: () => {
+          setDirty(false);
+          navigation.dispatch(data.action);
         },
-      ]);
-    });
-    return unsubscribe;
-  }, [navigation]);
+      },
+    ]);
+  });
 
   return (
     <KeyboardAvoidingView
@@ -183,12 +178,10 @@ export default function LogWorkoutScreen() {
         {exercises.map((exercise, exIdx) => (
           <View key={exercise.id} style={styles.exerciseCard}>
             <View style={styles.exerciseHeader}>
-              <TextInput
-                style={styles.exerciseNameInput}
-                placeholder={`Exercise ${exIdx + 1}`}
-                placeholderTextColor={colors.textSecondary}
+              <ExercisePicker
                 value={exercise.name}
-                onChangeText={(v) => updateExerciseName(exIdx, v)}
+                placeholder={`Exercise ${exIdx + 1}`}
+                onSelect={(name) => updateExerciseName(exIdx, name)}
               />
               {exercises.length > 1 && (
                 <TouchableOpacity onPress={() => removeExercise(exIdx)} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>

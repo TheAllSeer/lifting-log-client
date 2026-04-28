@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -17,6 +17,7 @@ import { Exercise, WorkoutSet, WeightUnit } from '../../types/types';
 import { useSession } from '../../contexts/SessionContext';
 import { WorkoutsStackParamList } from '../../navigation/navigationTypes';
 import { uuid } from '../../utils/uuid';
+import { ExercisePicker } from '../../components/ExercisePicker/ExercisePicker';
 import { styles } from './liveSessionScreenStyles';
 
 type Nav = NativeStackNavigationProp<WorkoutsStackParamList, 'LiveSession'>;
@@ -29,27 +30,24 @@ function formatElapsed(seconds: number): string {
   return `${pad(h)}:${pad(m)}:${pad(s)}`;
 }
 
+function makeSet(): WorkoutSet {
+  return { id: uuid(), reps: 0, weight: 0, unit: 'lbs' };
+}
+
 export default function LiveSessionScreen() {
   const navigation = useNavigation<Nav>();
   const { activeSession, elapsed, updateSession, finishSession } = useSession();
 
-  const [pendingReps, setPendingReps] = useState<Record<string, string>>({});
-  const [pendingWeight, setPendingWeight] = useState<Record<string, string>>({});
-  const [pendingUnit, setPendingUnit] = useState<Record<string, WeightUnit>>({});
-  const [newExerciseName, setNewExerciseName] = useState('');
-
   if (!activeSession) return null;
 
+  const updateSessionName = async (value: string) => {
+    await updateSession({ ...activeSession, name: value || null });
+  };
+
   const addExercise = async () => {
-    const name = newExerciseName.trim();
-    if (!name) {
-      Alert.alert('Enter exercise name');
-      return;
-    }
-    const exercise: Exercise = { id: uuid(), name, sets: [] };
+    const exercise: Exercise = { id: uuid(), name: '', sets: [makeSet()] };
     const updated = { ...activeSession, exercises: [...activeSession.exercises, exercise] };
     await updateSession(updated);
-    setNewExerciseName('');
   };
 
   const removeExercise = (exId: string) => {
@@ -69,26 +67,24 @@ export default function LiveSessionScreen() {
     ]);
   };
 
-  const logSet = async (exId: string) => {
-    const reps = parseInt(pendingReps[exId] || '0', 10);
-    const weight = parseFloat(pendingWeight[exId] || '0');
-    const unit = pendingUnit[exId] || 'lbs';
-
-    if (reps <= 0) {
-      Alert.alert('Enter reps');
-      return;
-    }
-
-    const newSet: WorkoutSet = { id: uuid(), reps, weight, unit };
+  const updateExerciseName = async (exId: string, value: string) => {
     const updated = {
       ...activeSession,
       exercises: activeSession.exercises.map((ex) =>
-        ex.id === exId ? { ...ex, sets: [...ex.sets, newSet] } : ex
+        ex.id === exId ? { ...ex, name: value } : ex
       ),
     };
     await updateSession(updated);
-    setPendingReps((p) => ({ ...p, [exId]: '' }));
-    setPendingWeight((p) => ({ ...p, [exId]: '' }));
+  };
+
+  const addSet = async (exId: string) => {
+    const updated = {
+      ...activeSession,
+      exercises: activeSession.exercises.map((ex) =>
+        ex.id === exId ? { ...ex, sets: [...ex.sets, makeSet()] } : ex
+      ),
+    };
+    await updateSession(updated);
   };
 
   const removeSet = async (exId: string, setId: string) => {
@@ -101,8 +97,33 @@ export default function LiveSessionScreen() {
     await updateSession(updated);
   };
 
-  const togglePendingUnit = (exId: string) => {
-    setPendingUnit((p) => ({ ...p, [exId]: (p[exId] || 'lbs') === 'lbs' ? 'kg' : 'lbs' }));
+  const updateSet = async (exId: string, setId: string, field: 'reps' | 'weight', value: number) => {
+    const updated = {
+      ...activeSession,
+      exercises: activeSession.exercises.map((ex) =>
+        ex.id === exId
+          ? { ...ex, sets: ex.sets.map((s) => (s.id === setId ? { ...s, [field]: value } : s)) }
+          : ex
+      ),
+    };
+    await updateSession(updated);
+  };
+
+  const toggleUnit = async (exId: string, setId: string) => {
+    const updated = {
+      ...activeSession,
+      exercises: activeSession.exercises.map((ex) =>
+        ex.id === exId
+          ? {
+              ...ex,
+              sets: ex.sets.map((s) =>
+                s.id === setId ? { ...s, unit: (s.unit === 'lbs' ? 'kg' : 'lbs') as WeightUnit } : s
+              ),
+            }
+          : ex
+      ),
+    };
+    await updateSession(updated);
   };
 
   const handleFinish = () => {
@@ -117,10 +138,6 @@ export default function LiveSessionScreen() {
         },
       },
     ]);
-  };
-
-  const updateSessionName = async (value: string) => {
-    await updateSession({ ...activeSession, name: value || null });
   };
 
   return (
@@ -145,80 +162,72 @@ export default function LiveSessionScreen() {
           onChangeText={updateSessionName}
         />
 
-        {/* Logged exercises */}
-        {activeSession.exercises.map((exercise) => (
+        {/* Exercises */}
+        {activeSession.exercises.map((exercise, exIdx) => (
           <View key={exercise.id} style={styles.exerciseCard}>
             <View style={styles.exerciseHeader}>
-              <Text style={styles.exerciseName}>{exercise.name}</Text>
+              <ExercisePicker
+                value={exercise.name}
+                placeholder={`Exercise ${exIdx + 1}`}
+                onSelect={(name) => updateExerciseName(exercise.id, name)}
+                accentColor={colors.sessionAccent}
+              />
               <TouchableOpacity onPress={() => removeExercise(exercise.id)} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
-                <Ionicons name="trash-outline" size={18} color={colors.danger} />
+                <Ionicons name="trash-outline" size={20} color={colors.danger} />
               </TouchableOpacity>
             </View>
 
-            {/* Logged sets */}
-            {exercise.sets.length > 0 && (
-              <View style={styles.setsTable}>
-                <View style={styles.setHeaderRow}>
-                  <Text style={[styles.setHeader, styles.setNumCol]}>Set</Text>
-                  <Text style={[styles.setHeader, styles.repsCol]}>Reps</Text>
-                  <Text style={[styles.setHeader, styles.weightCol]}>Weight</Text>
-                  <View style={styles.delCol} />
-                </View>
-                {exercise.sets.map((set, si) => (
-                  <View key={set.id} style={styles.loggedSetRow}>
-                    <Text style={[styles.loggedSetText, styles.setNumCol]}>{si + 1}</Text>
-                    <Text style={[styles.loggedSetText, styles.repsCol]}>{set.reps}</Text>
-                    <Text style={[styles.loggedSetText, styles.weightCol]}>{set.weight} {set.unit}</Text>
-                    <TouchableOpacity style={styles.delCol} onPress={() => removeSet(exercise.id, set.id)}>
-                      <Ionicons name="close-circle-outline" size={18} color={colors.danger} />
-                    </TouchableOpacity>
-                  </View>
-                ))}
+            <View style={styles.setHeaderRow}>
+              <Text style={[styles.setHeaderText, styles.setNumCol]}>Set</Text>
+              <Text style={[styles.setHeaderText, styles.repsCol]}>Reps</Text>
+              <Text style={[styles.setHeaderText, styles.weightCol]}>Weight</Text>
+              <Text style={[styles.setHeaderText, styles.unitCol]}>Unit</Text>
+              <View style={styles.actionCol} />
+            </View>
+
+            {exercise.sets.map((set, setIdx) => (
+              <View key={set.id} style={styles.setRow}>
+                <Text style={[styles.setNum, styles.setNumCol]}>{setIdx + 1}</Text>
+                <TextInput
+                  style={[styles.setInput, styles.repsCol]}
+                  keyboardType="number-pad"
+                  value={set.reps > 0 ? String(set.reps) : ''}
+                  placeholder="0"
+                  placeholderTextColor={colors.textDisabled}
+                  onChangeText={(v) => updateSet(exercise.id, set.id, 'reps', parseInt(v, 10) || 0)}
+                />
+                <TextInput
+                  style={[styles.setInput, styles.weightCol]}
+                  keyboardType="decimal-pad"
+                  value={set.weight > 0 ? String(set.weight) : ''}
+                  placeholder="0"
+                  placeholderTextColor={colors.textDisabled}
+                  onChangeText={(v) => updateSet(exercise.id, set.id, 'weight', parseFloat(v) || 0)}
+                />
+                <TouchableOpacity style={[styles.unitToggle, styles.unitCol]} onPress={() => toggleUnit(exercise.id, set.id)}>
+                  <Text style={styles.unitText}>{set.unit}</Text>
+                </TouchableOpacity>
+                {exercise.sets.length > 1 ? (
+                  <TouchableOpacity style={styles.actionCol} onPress={() => removeSet(exercise.id, set.id)}>
+                    <Ionicons name="close-circle-outline" size={20} color={colors.danger} />
+                  </TouchableOpacity>
+                ) : (
+                  <View style={styles.actionCol} />
+                )}
               </View>
-            )}
+            ))}
 
-            {/* Pending set input */}
-            <View style={styles.pendingRow}>
-              <TextInput
-                style={[styles.pendingInput, styles.repsCol]}
-                keyboardType="number-pad"
-                placeholder="Reps"
-                placeholderTextColor={colors.textDisabled}
-                value={pendingReps[exercise.id] || ''}
-                onChangeText={(v) => setPendingReps((p) => ({ ...p, [exercise.id]: v }))}
-              />
-              <TextInput
-                style={[styles.pendingInput, styles.weightCol]}
-                keyboardType="decimal-pad"
-                placeholder="Weight"
-                placeholderTextColor={colors.textDisabled}
-                value={pendingWeight[exercise.id] || ''}
-                onChangeText={(v) => setPendingWeight((p) => ({ ...p, [exercise.id]: v }))}
-              />
-              <TouchableOpacity style={styles.unitBtn} onPress={() => togglePendingUnit(exercise.id)}>
-                <Text style={styles.unitBtnText}>{pendingUnit[exercise.id] || 'lbs'}</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.logSetBtn} onPress={() => logSet(exercise.id)}>
-                <Text style={styles.logSetText}>Log</Text>
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity style={styles.addSetBtn} onPress={() => addSet(exercise.id)}>
+              <Ionicons name="add-circle-outline" size={18} color={colors.sessionAccent} />
+              <Text style={styles.addSetText}>Add Set</Text>
+            </TouchableOpacity>
           </View>
         ))}
 
-        {/* Add exercise */}
-        <View style={styles.addExRow}>
-          <TextInput
-            style={styles.addExInput}
-            placeholder="Exercise name"
-            placeholderTextColor={colors.textSecondary}
-            value={newExerciseName}
-            onChangeText={setNewExerciseName}
-          />
-          <TouchableOpacity style={styles.addExBtn} onPress={addExercise}>
-            <Ionicons name="add" size={20} color={colors.textPrimary} />
-            <Text style={styles.addExBtnText}>Add</Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity style={styles.addExerciseBtn} onPress={addExercise}>
+          <Ionicons name="add" size={20} color={colors.sessionAccent} />
+          <Text style={styles.addExerciseText}>Add Exercise</Text>
+        </TouchableOpacity>
       </ScrollView>
 
       {/* Finish button pinned at bottom */}

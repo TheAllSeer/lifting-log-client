@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     borderWidth: 1,
     borderColor: colors.border,
-    marginBottom: 16,
+    marginBottom: 12,
   },
 
   exerciseCard: {
@@ -28,22 +28,19 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.border,
   },
-  exerciseHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 },
-  exerciseName: { color: colors.textPrimary, fontSize: 16, fontWeight: '600' },
+  exerciseHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: 10 },
 
-  setsTable: { marginBottom: 10 },
-  setHeaderRow: { flexDirection: 'row', marginBottom: 4 },
-  setHeader: { color: colors.textSecondary, fontSize: 12, fontWeight: '500' },
-  setNumCol: { width: 36, textAlign: 'center' },
-  repsCol: { flex: 1, textAlign: 'center' },
-  weightCol: { flex: 1, textAlign: 'center' },
-  delCol: { width: 28, alignItems: 'center' as const },
+  setHeaderRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 4 },
+  setHeaderText: { color: colors.textSecondary, fontSize: 12, fontWeight: '500' },
+  setNumCol: { width: 32, textAlign: 'center' },
+  repsCol: { flex: 1, marginHorizontal: 4 },
+  weightCol: { flex: 1, marginHorizontal: 4 },
+  unitCol: { width: 44, alignItems: 'center' as const },
+  actionCol: { width: 28, alignItems: 'center' as const },
 
-  loggedSetRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 6, borderTopWidth: 1, borderTopColor: colors.border },
-  loggedSetText: { color: colors.textPrimary, fontSize: 14, textAlign: 'center' },
-
-  pendingRow: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 4 },
-  pendingInput: {
+  setRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 6 },
+  setNum: { color: colors.textSecondary, fontSize: 14, textAlign: 'center' },
+  setInput: {
     backgroundColor: colors.surfaceAlt,
     color: colors.textPrimary,
     borderRadius: 8,
@@ -52,41 +49,28 @@ export const styles = StyleSheet.create({
     fontSize: 15,
     textAlign: 'center',
   },
-  unitBtn: {
+  unitToggle: {
     backgroundColor: colors.surfaceAlt,
     borderRadius: 8,
     paddingVertical: 8,
-    paddingHorizontal: 10,
+    justifyContent: 'center',
   },
-  unitBtnText: { color: colors.sessionAccent, fontSize: 13, fontWeight: '600' },
-  logSetBtn: {
-    backgroundColor: colors.sessionAccent,
-    borderRadius: 8,
-    paddingVertical: 8,
-    paddingHorizontal: 14,
-  },
-  logSetText: { color: '#000', fontSize: 14, fontWeight: '600' },
+  unitText: { color: colors.sessionAccent, fontSize: 13, fontWeight: '600', textAlign: 'center' },
 
-  addExRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 4, marginBottom: 24 },
-  addExInput: {
-    flex: 1,
-    backgroundColor: colors.surface,
-    color: colors.textPrimary,
-    borderRadius: 10,
-    padding: 12,
-    fontSize: 15,
-    borderWidth: 1,
-    borderColor: colors.border,
-  },
-  addExBtn: {
+  addSetBtn: { flexDirection: 'row', alignItems: 'center', marginTop: 6, alignSelf: 'flex-start' },
+  addSetText: { color: colors.sessionAccent, fontSize: 14, marginLeft: 4 },
+
+  addExerciseBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: colors.sessionAccent,
-    borderRadius: 10,
+    justifyContent: 'center',
     paddingVertical: 12,
-    paddingHorizontal: 16,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: colors.sessionBanner,
+    marginBottom: 24,
   },
-  addExBtnText: { color: '#000', fontSize: 15, fontWeight: '600', marginLeft: 4 },
+  addExerciseText: { color: colors.sessionAccent, fontSize: 15, fontWeight: '500', marginLeft: 6 },
 
   finishBtn: {
     backgroundColor: colors.sessionAccent,
