@@ -39,16 +39,6 @@ export const styles = StyleSheet.create({
     borderColor: colors.border,
   },
   exerciseHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: 10 },
-  exerciseNameInput: {
-    flex: 1,
-    color: colors.textPrimary,
-    fontSize: 16,
-    fontWeight: '600',
-    borderBottomWidth: 1,
-    borderBottomColor: colors.border,
-    paddingBottom: 6,
-    marginRight: 8,
-  },
 
   setHeaderRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 4 },
   setHeaderText: { color: colors.textSecondary, fontSize: 12, fontWeight: '500' },
