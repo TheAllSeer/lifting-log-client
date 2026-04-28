@@ -1,14 +1,42 @@
-import React, { useLayoutEffect, useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React, { useCallback, useLayoutEffect, useState } from 'react';
+import { View, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../../theme/colors';
+import { Workout } from '../../types/types';
+import { workoutRepository } from '../../storage/storage';
+import { useSettings } from '../../contexts/SettingsContext';
+import {
+  getWeeklyWorkoutCount,
+  getWeeklySetsPerMuscle,
+  getWeeklyVolumePerMuscle,
+} from '../../utils/weeklyStats';
+import WeeklyWorkouts from './WeeklyWorkouts/WeeklyWorkouts';
+import WeeklySetsPerMuscle from './WeeklySetsPerMuscle/WeeklySetsPerMuscle';
+import WeeklyVolume from './WeeklyVolume/WeeklyVolume';
 import SettingsModal from './SettingsModal/SettingsModal';
 import { styles } from './homeScreenStyles';
 
 export default function HomeScreen() {
   const navigation = useNavigation();
   const [settingsVisible, setSettingsVisible] = useState(false);
+  const [workouts, setWorkouts] = useState<Workout[]>([]);
+  const [loading, setLoading] = useState(true);
+  const { settings } = useSettings();
+
+  useFocusEffect(
+    useCallback(() => {
+      let active = true;
+      (async () => {
+        setLoading(true);
+        const all = await workoutRepository.getAll();
+        if (!active) return;
+        setWorkouts(all);
+        setLoading(false);
+      })();
+      return () => { active = false; };
+    }, [])
+  );
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -24,24 +52,24 @@ export default function HomeScreen() {
     });
   }, [navigation]);
 
+  const weeklyCount = getWeeklyWorkoutCount(workouts, settings.weekStart);
+  const setsData = getWeeklySetsPerMuscle(workouts, settings.weekStart);
+  const volumeData = getWeeklyVolumePerMuscle(workouts, settings.weekStart, settings.displayUnit);
+
   return (
     <>
-      <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-        <View style={styles.card}>
-          <Text style={styles.cardTitle}>Workouts This Week</Text>
+      {loading ? (
+        <View style={styles.centered}>
+          <ActivityIndicator color={colors.primary} size="large" />
         </View>
-
-        <View style={styles.card}>
-          <Text style={styles.cardTitle}>Sets This Week</Text>
-        </View>
-
-        <View style={styles.card}>
-          <Text style={styles.cardTitle}>Volume This Week</Text>
-        </View>
-      </ScrollView>
-
+      ) : (
+        <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+          <WeeklyWorkouts count={weeklyCount} />
+          <WeeklySetsPerMuscle data={setsData} />
+          <WeeklyVolume data={volumeData} displayUnit={settings.displayUnit} />
+        </ScrollView>
+      )}
       <SettingsModal visible={settingsVisible} onClose={() => setSettingsVisible(false)} />
     </>
   );
 }
-
